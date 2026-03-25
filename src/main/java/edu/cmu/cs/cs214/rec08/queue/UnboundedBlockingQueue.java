@@ -40,7 +40,9 @@ public class UnboundedBlockingQueue<E> implements SimpleQueue<E> {
     public synchronized E dequeue() {
         while (queue.isEmpty()) {
             try {
+                // (Release the lock and wait until an element is enqueued)
                 wait();
+                // (When wake up, re-acquire the lock)
             } catch (InterruptedException e) {
                 // If the thread is interrupted while waiting, we should restore the interrupt status
                 Thread.currentThread().interrupt(); 
